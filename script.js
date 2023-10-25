@@ -52,6 +52,7 @@ cookie.style.background = '#37383d';
 // console.log(cookie.style.height); // ''
 
 //Css dan style qiymatni olish => getComputedStyle(element)
+
 // console.log(getComputedStyle(cookie).color);
 // console.log(getComputedStyle(cookie).height);
 
@@ -68,3 +69,112 @@ cookie.style.height = getComputedStyle(cookie).height + '30px';
 document
   .querySelector('.btn--close-cookie')
   .addEventListener('click', () => cookie.remove());
+
+///////////////////////////////////////////
+// Atributes
+
+const logo = document.querySelector('.nav__logo');
+
+// console.log(logo);
+// console.log(logo.alt); // Bankist logo
+// console.log(logo.src); // http://127.0.0.1:5500/img/logo.png
+
+// console.log(logo.designer); // undefined
+// console.log(logo.getAttribute('designer')); // Jonas
+
+// logo.alt = 'Bankist logo by Jonas';
+//logo.company = "Banklist"; => Ishlamaydi
+// logo.setAttribute('company', 'Banklist');
+
+// data attribute
+// console.log(logo.dataset.id); // #123
+// console.log(logo.dataset.version); // version-1
+
+//PART 2
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', e => {
+  e.preventDefault();
+
+  //getBoundingClientRect() => element koordinatalarini viewport (ko'rinib turgan joy) ga nisbatan oladi
+  // console.log(section1);
+  console.log(section1.getBoundingClientRect());
+
+  // window.pageXOffset, window.pageYoffset => bular document dastlabki holatiga kora qancha scroll bolganini korsatadi
+
+  console.log('x', window.pageXOffset);
+  console.log('y', window.pageYOffset);
+
+  // JS da scroll ilish
+  // JS da scroll qilish uchun: window.scrollTo
+  // 1-usul(eskirgan): window.scrollTo
+  // window.scrollTo({
+  //   left: section1.getBoundingClientRect().left + window.pageXOffset,
+  //   top: section1.getBoundingClientRect().top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  // 2-usul: scrollIntoView
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Capturing and bubbling
+
+const colorGenerator = () => {
+  return `rgb(
+    ${Math.trunc(Math.random() * 256 + 1)},
+    ${Math.trunc(Math.random() * 256 + 1)},
+    ${Math.trunc(Math.random() * 256 + 1)}
+  )`;
+};
+
+// const nav = document.querySelector('.nav');
+// const navLinks = document.querySelector('.nav__links');
+// const navItem = document.querySelector('.nav__item');
+
+// navItem.addEventListener('click', e => {
+//   e.preventDefault();
+//   navItem.style.background = colorGenerator();
+// });
+
+// navLinks.addEventListener('click', e => {
+//   navLinks.style.background = colorGenerator();
+// });
+
+// nav.addEventListener('click', e => {
+//   nav.style.background = colorGenerator();
+// }, true);
+
+//1-usul
+
+// const navLinks = document.querySelectorAll('.nav__item');
+
+// navLinks.forEach(link => {
+//   link.addEventListener('click', function (e) {
+//     e.preventDefault();
+
+//     const sectionName = this.children[0].getAttribute('href');
+//     document.querySelector(sectionName).sctollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// 2-usul
+const navLink = document.querySelector('.nav__links');
+
+navLink.addEventListener('click', function (e) {
+  navLink.style.background = colorGenerator();
+  // console.log(this);
+  // console.log('target', e.target);
+  // console.log('current target', e.currentTarget);
+
+  // console.log(e.currentTarget == this); // => true; eventListener qo'shilgan elementi ayni o'zi
+
+  // Matching
+  if (e.target.classList.contains('nav__link')) {
+    console.log(e.target);
+
+    const sectionName = e.target.getAttribute('href');
+    document.querySelector(sectionName).scrollIntoView({ behavior: 'smooth' });
+  }
+});
