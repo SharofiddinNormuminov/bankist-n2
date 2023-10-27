@@ -163,7 +163,8 @@ const colorGenerator = () => {
 const navLink = document.querySelector('.nav__links');
 
 navLink.addEventListener('click', function (e) {
-  navLink.style.background = colorGenerator();
+  e.preventDefault();
+  // navLink.style.background = colorGenerator();
   // console.log(this);
   // console.log('target', e.target);
   // console.log('current target', e.currentTarget);
@@ -178,3 +179,101 @@ navLink.addEventListener('click', function (e) {
     document.querySelector(sectionName).scrollIntoView({ behavior: 'smooth' });
   }
 });
+
+// DOM Traverse
+/*
+const h1 = document.querySelector('h1');
+// 1) Up => Down
+console.log(h1.children);
+console.log(h1.childNodes);
+
+console.log(document.querySelector('.highlight'));
+console.log(h1.querySelector('.highlight'));
+
+// 2) Down => Up
+
+console.log(h1.parentElement);
+console.log(h1.parentNode);
+
+// closest
+console.log(h1.closest('.header__title'));
+
+// 3) Sideways || Siblings
+
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+// console.log(document.querySelector('.header__title').childNodes);
+
+// Barcha siblinglarga olish
+console.log(h1.parentElement.children);
+*/
+
+// Tab
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContents = document.querySelectorAll('.operations__content');
+const tabContainer = document.querySelector('.operations__tab-container');
+
+tabContainer.addEventListener('click', e => {
+  // matching
+  const clicked = e.target.closest('.operations__tab');
+
+  // Guarding
+  if (!clicked) return;
+
+  // Active tab
+  tabs.forEach(tab => {
+    tab.classList.remove('operations__tab--active');
+  });
+
+  clicked.classList.add('operations__tab--active');
+
+  // Active tab content
+  tabContents.forEach(content => {
+    content.classList.remove('operations__content--active');
+  });
+
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add(`operations__content--active`);
+});
+
+// navbar
+
+// const hoverNavbar = function(e, opacity) {
+//   // matching
+//   if (e.target.classList.contains('nav__link')) {
+//     const logo = nav.children[0];
+//     const siblings = nav.querySelectorAll('.nav__link');
+
+//     logo.style.opacity = opacity;
+//     siblings.forEach(link => {
+//       if (link != e.target) link.style.opacity = opacity;
+//     });
+//   }
+// };
+
+const hoverNavbar = function (e) {
+  // matching
+  if (e.target.classList.contains('nav__link')) {
+    const logo = nav.children[0];
+    const siblings = nav.querySelectorAll('.nav__link');
+
+    logo.style.opacity = this;
+    siblings.forEach(link => {
+      if (link != e.target) link.style.opacity = this;
+    });
+  }
+};
+
+const nav = document.querySelector('.nav');
+
+// nav.addEventListener('mouseover',(e) => hoverNavbar(e, opacity))
+nav.addEventListener('mouseover', hoverNavbar.bind(0.5));
+
+// nav.addEventListener('mouseout',(e) => hoverNavbar(e, opacity))
+nav.addEventListener('mouseout', hoverNavbar.bind(1));
+
